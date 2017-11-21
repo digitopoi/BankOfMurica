@@ -40,7 +40,8 @@ namespace BankOfMurica.ATMConsole
 
         private static void MainMenu(int accountInput, int pinInput)
         {
-            var service = new AccountService(accountInput, pinInput);
+            var accountService = new AccountService(accountInput, pinInput);
+            var transactionService = new TransactionService(accountInput);
             ATMUtilities.NavigationMenu(); 
 
             var input = Console.ReadKey().Key;
@@ -51,7 +52,7 @@ namespace BankOfMurica.ATMConsole
                 {
                     case ConsoleKey.NumPad1:
                         Console.Clear();
-                        var balance = service.CheckBalance();
+                        var balance = accountService.CheckBalance();
                         ATMUtilities.DisplayBalance(balance);
                         Thread.Sleep(5000);
                         Console.Clear();
@@ -59,10 +60,16 @@ namespace BankOfMurica.ATMConsole
                         input = Console.ReadKey().Key;
                         break;
 
-                    //case ConsoleKey.NumPad2:
-                    //    Console.Clear();
-                    //    Withdrawal();
-                    //    break;
+                    case ConsoleKey.NumPad2:
+                        Console.Clear();
+                        decimal amount = ATMUtilities.WithdrawalPrompt();
+                        transactionService.Withdraw(amount);
+                        Console.Clear();
+                        ATMUtilities.NewBalance(accountService.CheckBalance());
+                        Thread.Sleep(5000);
+                        ATMUtilities.NavigationMenu();
+                        input = Console.ReadKey().Key;
+                        break;
 
                     //case ConsoleKey.NumPad3:
                     //    Console.Clear();
@@ -72,7 +79,7 @@ namespace BankOfMurica.ATMConsole
                     case ConsoleKey.NumPad4:
                         Console.Clear();
                         
-                        var returnValue = service.ChangePin(ATMUtilities.PinChanger());
+                        var returnValue = accountService.ChangePin(ATMUtilities.PinChanger());
                         if (returnValue)
                         {
                             Console.Clear();

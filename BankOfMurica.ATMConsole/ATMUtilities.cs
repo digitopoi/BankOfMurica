@@ -99,5 +99,38 @@ namespace BankOfMurica.ATMConsole
             Console.WriteLine("                                                                       ");
             Console.WriteLine("=======================================================================");
         }
+
+        public static decimal WithdrawalPrompt()
+        {
+            Console.WriteLine("");
+            Console.WriteLine("=======================================================================");
+            Console.WriteLine("|                                                                     |");
+            Console.WriteLine("                                                                       ");
+            Console.WriteLine("|                                                                     |");
+            Console.WriteLine("                   How much would you like to withdraw?:               ");
+            Console.WriteLine("|                                                                     |");
+            Console.WriteLine($"                                                                      "); 
+            Console.WriteLine("|                                                                     |");
+            Console.WriteLine("                                                                       ");
+            Console.WriteLine("=======================================================================");
+            Console.Write("                                 ");
+            var amount = Convert.ToDecimal(Console.ReadLine());
+            return amount;
+        }
+
+        public static void NewBalance(decimal balance)
+        {
+            Console.WriteLine("");
+            Console.WriteLine("=======================================================================");
+            Console.WriteLine("|                                                                     |");
+            Console.WriteLine("                                                                       ");
+            Console.WriteLine("|                     WITHDRAWAL SUCCESSFUL!                          |");
+            Console.WriteLine("                            NEW BALANCE:                               ");
+            Console.WriteLine("|                                                                     |");
+            Console.WriteLine($"                                {balance.ToString("C")}");                
+            Console.WriteLine("|                                                                     |");
+            Console.WriteLine("                                                                       ");
+            Console.WriteLine("=======================================================================");
+        }
     }
 }
