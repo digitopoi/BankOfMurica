@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankOfMurica.Data", "BankOf
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankOfMurica.Services", "BankOfMurica.Services\BankOfMurica.Services.csproj", "{AB00162B-2C98-4F03-ACB2-50FFA9A62B0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankOfMurica.Web", "BankOfMurica.Web\BankOfMurica.Web.csproj", "{606B8156-E84A-4A45-93E3-3D71F007DBB2}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankOfMurica.Models", "BankOfMurica.Models\BankOfMurica.Models.csproj", "{67AFFBC4-5788-40F2-A511-4479C8D4D55A}"
 EndProject
 Global
@@ -31,10 +29,6 @@ Global
 		{AB00162B-2C98-4F03-ACB2-50FFA9A62B0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB00162B-2C98-4F03-ACB2-50FFA9A62B0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB00162B-2C98-4F03-ACB2-50FFA9A62B0F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{606B8156-E84A-4A45-93E3-3D71F007DBB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{606B8156-E84A-4A45-93E3-3D71F007DBB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{606B8156-E84A-4A45-93E3-3D71F007DBB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{606B8156-E84A-4A45-93E3-3D71F007DBB2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{67AFFBC4-5788-40F2-A511-4479C8D4D55A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{67AFFBC4-5788-40F2-A511-4479C8D4D55A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67AFFBC4-5788-40F2-A511-4479C8D4D55A}.Release|Any CPU.ActiveCfg = Release|Any CPU
