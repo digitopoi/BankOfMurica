@@ -13,10 +13,10 @@ namespace BankOfMurica.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class BankOfMuricaEntities : DbContext
+    public partial class BankEntities : DbContext
     {
-        public BankOfMuricaEntities()
-            : base("name=BankOfMuricaEntities")
+        public BankEntities()
+            : base("name=BankEntities")
         {
         }
     

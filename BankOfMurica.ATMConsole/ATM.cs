@@ -33,23 +33,15 @@ namespace BankOfMurica.ATMConsole
             else
             {
                 Console.Clear();
-                MainMenu();
+                MainMenu(accountInput, pinInput);
             }
             
         }
 
-        private static void MainMenu()
+        private static void MainMenu(int accountInput, int pinInput)
         {
-            Console.WriteLine("=======================================================================");
-            Console.WriteLine("|                                                                     |");
-            Console.WriteLine("|                              NAVIGATION MENU                        |");
-            Console.WriteLine("|                      (make selection on number pad)                 |");
-            Console.WriteLine("|                                                                     |");
-            Console.WriteLine("|      [1] Check Balance                         [4] Change Pin       |");
-            Console.WriteLine("|      [2] Make Withdrawal                       [5] Make Transfer    |");
-            Console.WriteLine("|      [3] Make Deposit                          [6] Signout          |");
-            Console.WriteLine("|                                                                     |");
-            Console.WriteLine("=======================================================================");
+            var service = new AccountService(accountInput, pinInput);
+            ATMUtilities.NavigationMenu(); 
 
             var input = Console.ReadKey().Key;
 
@@ -59,33 +51,39 @@ namespace BankOfMurica.ATMConsole
                 {
                     case ConsoleKey.NumPad1:
                         Console.Clear();
-                        CheckBalance();
+                        var balance = service.CheckBalance();
+                        ATMUtilities.DisplayBalance(balance);
+                        Thread.Sleep(5000);
+                        Console.Clear();
+                        ATMUtilities.NavigationMenu();
+                        input = Console.ReadKey().Key;
                         break;
 
-                    case ConsoleKey.NumPad2:
-                        Console.Clear();
-                        Withdrawal();
-                        break;
+                    //case ConsoleKey.NumPad2:
+                    //    Console.Clear();
+                    //    Withdrawal();
+                    //    break;
 
-                    case ConsoleKey.NumPad3:
-                        Console.Clear();
-                        Deposit();
-                        break;
+                    //case ConsoleKey.NumPad3:
+                    //    Console.Clear();
+                    //    Deposit();
+                    //    break;
 
                     case ConsoleKey.NumPad4:
                         Console.Clear();
-                        ChangePin();
+                        
+                        service.ChangePin(ATMUtilities.PinChanger());
                         break;
 
-                    case ConsoleKey.NumPad5:
-                        Console.Clear();
-                        Transfer();
-                        break;
+                    //case ConsoleKey.NumPad5:
+                    //    Console.Clear();
+                    //    Transfer();
+                    //    break;
 
-                    case ConsoleKey.NumPad6:
-                        Console.Clear();
-                        SignOut();
-                        break;
+                    //case ConsoleKey.NumPad6:
+                    //    Console.Clear();
+                    //    SignOut();
+                    //    break;
                 }
             }
 

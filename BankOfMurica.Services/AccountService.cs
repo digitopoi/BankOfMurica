@@ -21,7 +21,7 @@ namespace BankOfMurica.Services
 
         public bool CheckAccount()
         {
-            using (BankOfMuricaEntities context = new BankOfMuricaEntities())
+            using (BankEntities context = new BankEntities())
             {
                 var query = context
                               .Accounts
@@ -37,7 +37,7 @@ namespace BankOfMurica.Services
 
         public decimal CheckBalance()
         {
-            using (BankOfMuricaEntities context = new BankOfMuricaEntities())
+            using (BankEntities context = new BankEntities())
             {
                 var query = context
                               .Accounts
@@ -48,9 +48,9 @@ namespace BankOfMurica.Services
             }
         }
 
-        public bool ChangePin(byte newPin)
+        public bool ChangePin(int newPin)
         {
-            using (BankOfMuricaEntities context = new BankOfMuricaEntities())
+            using (BankEntities context = new BankEntities())
             {
                 var query = context
                                .Accounts

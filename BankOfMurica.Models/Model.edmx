@@ -12,8 +12,8 @@
           <Property Name="AccountID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AccountNumber" Type="int" Nullable="false" />
           <Property Name="Balance" Type="money" Nullable="false" />
-          <Property Name="Pin" Type="tinyint" Nullable="false" />
           <Property Name="CustomerID" Type="int" Nullable="false" />
+          <Property Name="Pin" Type="int" />
         </EntityType>
         <EntityType Name="Customers">
           <Key>
@@ -86,8 +86,8 @@
           <Property Name="AccountID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="AccountNumber" Type="Int32" Nullable="false" />
           <Property Name="Balance" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
-          <Property Name="Pin" Type="Byte" Nullable="false" />
           <Property Name="CustomerID" Type="Int32" Nullable="false" />
+          <Property Name="Pin" Type="Int32" />
           <NavigationProperty Name="Customer" Relationship="Self.FK_dbo_Accounts_dbo_Customers_CustomerID" FromRole="Accounts" ToRole="Customers" />
           <NavigationProperty Name="Transactions" Relationship="Self.FK_dbo_Transactions_dbo_Accounts_AccoundID" FromRole="Accounts" ToRole="Transactions" />
         </EntityType>
@@ -139,7 +139,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="BankOfMuricaEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="BankEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Accounts" EntityType="Self.Account" />
           <EntitySet Name="Customers" EntityType="Self.Customer" />
           <EntitySet Name="Transactions" EntityType="Self.Transaction" />
@@ -157,15 +157,15 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="BankOfMuricaModelStoreContainer" CdmEntityContainer="BankOfMuricaEntities">
+        <EntityContainerMapping StorageEntityContainer="BankOfMuricaModelStoreContainer" CdmEntityContainer="BankEntities">
           <EntitySetMapping Name="Accounts">
             <EntityTypeMapping TypeName="BankOfMuricaModel.Account">
               <MappingFragment StoreEntitySet="Accounts">
                 <ScalarProperty Name="AccountID" ColumnName="AccountID" />
                 <ScalarProperty Name="AccountNumber" ColumnName="AccountNumber" />
                 <ScalarProperty Name="Balance" ColumnName="Balance" />
-                <ScalarProperty Name="Pin" ColumnName="Pin" />
                 <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="Pin" ColumnName="Pin" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
