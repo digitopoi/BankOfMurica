@@ -17,14 +17,19 @@ namespace BankOfMurica.Services
             _accountNum = accountNum;
         }
 
+        private Account GetAccount(BankEntities context)
+        {
+            return context
+                       .Accounts
+                       .Where(e => e.AccountNumber == _accountNum)
+                       .SingleOrDefault();
+        }
+
         public bool Withdraw(decimal amount)
         {
             using (BankEntities context = new BankEntities())
             {
-                var query = context
-                                   .Accounts
-                                   .Where(e => e.AccountNumber == _accountNum)
-                                   .SingleOrDefault();
+                Account query = GetAccount(context);
 
                 var balance = query.Balance;
                 var newBalance = balance - amount;
@@ -50,14 +55,12 @@ namespace BankOfMurica.Services
             }
         }
 
+
         public bool Deposit(decimal amount)
         {
             using (BankEntities context = new BankEntities())
             {
-                var query = context
-                                   .Accounts
-                                   .Where(e => e.AccountNumber == _accountNum)
-                                   .SingleOrDefault();
+                Account query = GetAccount(context);
 
                 var balance = query.Balance;
                 var newBalance = balance + amount;
