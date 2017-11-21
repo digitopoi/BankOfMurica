@@ -21,9 +21,9 @@ namespace BankOfMurica.Services
 
         public bool CheckAccount()
         {
-            using (BankOfMuricaEntities db = new BankOfMuricaEntities())
+            using (BankOfMuricaEntities context = new BankOfMuricaEntities())
             {
-                var query = db
+                var query = context
                               .Accounts
                               .Where(e => e.AccountNumber == _accountNum && e.Pin == _accountPin)
                               .SingleOrDefault();
@@ -37,12 +37,30 @@ namespace BankOfMurica.Services
 
         public decimal CheckBalance()
         {
-
+            using (BankOfMuricaEntities context = new BankOfMuricaEntities())
+            {
+                var query = context
+                              .Accounts
+                              .Where(e => e.AccountNumber == _accountNum)
+                              .Select(e => e.Balance)
+                              .SingleOrDefault();
+                return query;
+            }
         }
 
-        public bool ChangePin()
+        public bool ChangePin(byte newPin)
         {
+            using (BankOfMuricaEntities context = new BankOfMuricaEntities())
+            {
+                var query = context
+                               .Accounts
+                               .Where(e => e.AccountNumber == _accountNum)
+                               .SingleOrDefault();
 
+                query.Pin = newPin;
+
+                return context.SaveChanges() == 1;
+            }
         }
 
     }
