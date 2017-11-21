@@ -38,5 +38,20 @@ namespace BankOfMurica.Services
                 return context.SaveChanges() == 1;
             }
         }
+
+        public bool Deposit(decimal amount)
+        {
+            using (BankEntities context = new BankEntities())
+            {
+                var query = context
+                                   .Accounts
+                                   .Where(e => e.AccountNumber == _accountNum)
+                                   .SingleOrDefault();
+
+                query.Balance += amount;
+
+                return context.SaveChanges() == 1;
+            }
+        }
     }
 }

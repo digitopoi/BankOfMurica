@@ -52,28 +52,28 @@ namespace BankOfMurica.ATMConsole
                 {
                     case ConsoleKey.NumPad1:
                         Console.Clear();
-                        var balance = accountService.CheckBalance();
-                        ATMUtilities.DisplayBalance(balance);
-                        Thread.Sleep(5000);
-                        Console.Clear();
-                        ATMUtilities.NavigationMenu();
+                        ATMUtilities.DisplayBalance(accountService.CheckBalance());
+                        ATMUtilities.NewMenuScreen();
                         input = Console.ReadKey().Key;
                         break;
 
                     case ConsoleKey.NumPad2:
                         Console.Clear();
-                        decimal amount = ATMUtilities.WithdrawalPrompt();
-                        transactionService.Withdraw(amount);
+                        transactionService.Withdraw(ATMUtilities.WithdrawalPrompt());
                         Console.Clear();
                         ATMUtilities.NewBalance(accountService.CheckBalance());
                         ATMUtilities.NewMenuScreen();
                         input = Console.ReadKey().Key;
                         break;
 
-                    //case ConsoleKey.NumPad3:
-                    //    Console.Clear();
-                    //    Deposit();
-                    //    break;
+                    case ConsoleKey.NumPad3:
+                        Console.Clear();
+                        transactionService.Deposit(ATMUtilities.DepositPrompt());
+                        Console.Clear();
+                        ATMUtilities.NewBalance(accountService.CheckBalance());
+                        ATMUtilities.NewMenuScreen();
+                        input = Console.ReadKey().Key;
+                        break;
 
                     case ConsoleKey.NumPad4:
                         Console.Clear();
@@ -84,9 +84,7 @@ namespace BankOfMurica.ATMConsole
                             Console.Clear();
                             ATMUtilities.PinChangeSuccess();
                         }
-                        Thread.Sleep(1500);
-                        Console.Clear();
-                        ATMUtilities.NavigationMenu();
+                        ATMUtilities.NewMenuScreen();
                         input = Console.ReadKey().Key;
                         break;
 
@@ -95,10 +93,10 @@ namespace BankOfMurica.ATMConsole
                     //    Transfer();
                     //    break;
 
-                    //case ConsoleKey.NumPad6:
-                    //    Console.Clear();
-                    //    SignOut();
-                    //    break;
+                    case ConsoleKey.NumPad6:
+                        Console.Clear();
+                        SignOut();
+                        break;
                 }
             }
 

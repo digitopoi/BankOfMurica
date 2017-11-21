@@ -108,7 +108,7 @@ namespace BankOfMurica.ATMConsole
             Console.WriteLine("|                                                                     |");
             Console.WriteLine("                                                                       ");
             Console.WriteLine("|                                                                     |");
-            Console.WriteLine("                   How much would you like to withdraw?:               ");
+            Console.WriteLine("                   How much would you like to withdraw?                ");
             Console.WriteLine("|                                                                     |");
             Console.WriteLine($"                                                                      "); 
             Console.WriteLine("|                                                                     |");
@@ -134,7 +134,25 @@ namespace BankOfMurica.ATMConsole
             Console.WriteLine("=======================================================================");
         }
 
-        public static void NewMenuScreen()
+        public static decimal DepositPrompt()
+        {
+            Console.WriteLine("");
+            Console.WriteLine("=======================================================================");
+            Console.WriteLine("|                                                                     |");
+            Console.WriteLine("                                                                       ");
+            Console.WriteLine("|                                                                     |");
+            Console.WriteLine("                   How much would you like to deposit?                 ");
+            Console.WriteLine("|                                                                     |");
+            Console.WriteLine($"                                                                      ");
+            Console.WriteLine("|                                                                     |");
+            Console.WriteLine("                                                                       ");
+            Console.WriteLine("=======================================================================");
+            Console.Write("                                 ");
+            var amount = Convert.ToDecimal(Console.ReadLine());
+            return amount;
+        }
+
+            public static void NewMenuScreen()
         {
             Thread.Sleep(5000);
             Console.Clear();
