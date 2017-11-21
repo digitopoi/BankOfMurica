@@ -11,7 +11,6 @@ namespace BankOfMurica.ATMConsole
         static void Main(string[] args)
         {
             ATM.Login();
-            Console.ReadLine();
         }
     }
 }

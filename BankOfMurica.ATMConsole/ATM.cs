@@ -46,7 +46,7 @@ namespace BankOfMurica.ATMConsole
 
             var input = Console.ReadKey().Key;
 
-            while (input != ConsoleKey.NumPad6)
+            while (true)
             {
                 switch (input)
                 {
@@ -88,15 +88,36 @@ namespace BankOfMurica.ATMConsole
                         input = Console.ReadKey().Key;
                         break;
 
-                    //case ConsoleKey.NumPad5:
-                    //    Console.Clear();
-                    //    Transfer();
-                    //    break;
+                    case ConsoleKey.NumPad5:
+                        Console.Clear();
+                        var target = ATMUtilities.TransferAccountPrompt();
+                        Console.Clear();
+                        var amount = ATMUtilities.TransferAmountPrompt();
+                        Console.Clear();
+                        transactionService.Transfer(target, amount);
+                        ATMUtilities.TransferSuccess(accountService.CheckBalance());
+                        ATMUtilities.NewMenuScreen();
+                        input = Console.ReadKey().Key;
+                        break;
 
-                    //case ConsoleKey.NumPad6:
-                    //    Console.Clear();
-                    //    SignOut();
-                    //    break;
+                    case ConsoleKey.NumPad6:
+                        Console.Clear();
+                        ATMUtilities.GetHistory();
+                        Thread.Sleep(500);
+                        var transactions = transactionService.AccountHistory();
+                        ATMUtilities.HistoryRow(transactions);
+                        Thread.Sleep(3000);
+                        ATMUtilities.NewMenuScreen();
+                        input = Console.ReadKey().Key;
+                        break;
+
+                    case ConsoleKey.NumPad7:
+                        Console.Clear();
+                        ATMUtilities.SignOut();
+                        Thread.Sleep(3000);
+                        Console.Clear();
+                        Login();
+                        break;
                 }
             }
 

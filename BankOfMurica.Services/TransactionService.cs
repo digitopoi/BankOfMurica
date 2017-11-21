@@ -1,6 +1,7 @@
 ﻿using BankOfMurica.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,7 +28,7 @@ namespace BankOfMurica.Services
 
                 var balance = query.Balance;
                 var newBalance = balance - amount;
-                var balanceDiff = newBalance - balance;
+                var balanceDiff = amount * -1;
 
                 if (newBalance <= 0)
                 {
@@ -60,7 +61,7 @@ namespace BankOfMurica.Services
 
                 var balance = query.Balance;
                 var newBalance = balance + amount;
-                var balanceDiff = newBalance - balance;
+                var balanceDiff = amount;
 
                 var transaction = new Transaction()
                 {
@@ -75,5 +76,66 @@ namespace BankOfMurica.Services
                 return context.SaveChanges() == 1;
             }
         }
+
+        public bool Transfer(int target, decimal amount)
+        {
+            using (BankEntities context = new BankEntities())
+            {
+                var origin = context
+                                  .Accounts
+                                  .Where(e => e.AccountNumber == _accountNum)
+                                  .SingleOrDefault();
+
+                var destination = context
+                                  .Accounts
+                                  .Where(e => e.AccountNumber == target)
+                                  .SingleOrDefault();
+
+                var originBalance = origin.Balance;
+                var destinationBalance = destination.Balance;
+
+                var newOriginBalance = originBalance - amount;
+                var newDestinationBalance = destinationBalance + amount;
+
+                var originDifference = amount * -1;
+                var destinationDifference = amount;
+
+                var originTransaction = new Transaction()
+                {
+                    AccountNumber = _accountNum,
+                    TransactionType = "Transfer",
+                    BalanceDifference = originDifference,
+                    TransactionDate = DateTime.Now
+                };
+
+                var destinationTransaction = new Transaction()
+                {
+                    AccountNumber = target,
+                    TransactionType = "Transfer",
+                    BalanceDifference = destinationDifference,
+                    TransactionDate = DateTime.Now
+                };
+
+                origin.Balance = newOriginBalance;
+                destination.Balance = newDestinationBalance;
+                context.Transactions.Add(originTransaction);
+                context.Transactions.Add(destinationTransaction);
+
+                return context.SaveChanges() == 1;
+            }
+        }
+
+        public IEnumerable<Transaction> AccountHistory()
+        {
+            using (BankEntities context = new BankEntities())
+            {
+                var query = context
+                                   .Transactions
+                                   .Where(e => e.AccountNumber == _accountNum)
+                                   .ToList();
+                return query;
+            }
+        }
+ 
     }
 }
