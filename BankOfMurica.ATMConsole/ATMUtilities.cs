@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BankOfMurica.ATMConsole
@@ -131,6 +132,13 @@ namespace BankOfMurica.ATMConsole
             Console.WriteLine("|                                                                     |");
             Console.WriteLine("                                                                       ");
             Console.WriteLine("=======================================================================");
+        }
+
+        public static void NewMenuScreen()
+        {
+            Thread.Sleep(5000);
+            Console.Clear();
+            NavigationMenu();
         }
     }
 }

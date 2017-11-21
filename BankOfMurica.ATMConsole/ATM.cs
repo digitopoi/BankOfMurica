@@ -66,8 +66,7 @@ namespace BankOfMurica.ATMConsole
                         transactionService.Withdraw(amount);
                         Console.Clear();
                         ATMUtilities.NewBalance(accountService.CheckBalance());
-                        Thread.Sleep(5000);
-                        ATMUtilities.NavigationMenu();
+                        ATMUtilities.NewMenuScreen();
                         input = Console.ReadKey().Key;
                         break;
 
