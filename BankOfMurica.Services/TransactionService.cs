@@ -26,7 +26,7 @@ namespace BankOfMurica.Services
                                    .SingleOrDefault();
 
                 var balance = query.Balance;
-                var newBalance = balance -= amount;
+                var newBalance = balance - amount;
                 var balanceDiff = newBalance - balance;
 
                 if (newBalance <= 0)
@@ -34,15 +34,17 @@ namespace BankOfMurica.Services
                     Console.WriteLine("You don't have enough funds.");
                     return false;
                 }
-                query.Balance = newBalance;
 
-                // TODO: implement saving transactions
                 var transaction = new Transaction()
                 {
-                    
+                    AccountNumber = _accountNum,
+                    TransactionType = "Withdrawal",
+                    BalanceDifference = balanceDiff,
+                    TransactionDate = DateTime.Now
                 };
 
-                context.SaveChanges();
+                query.Balance = newBalance;
+                context.Transactions.Add(transaction);
                 return context.SaveChanges() == 1;
             }
         }
@@ -56,8 +58,20 @@ namespace BankOfMurica.Services
                                    .Where(e => e.AccountNumber == _accountNum)
                                    .SingleOrDefault();
 
-                query.Balance += amount;
+                var balance = query.Balance;
+                var newBalance = balance + amount;
+                var balanceDiff = newBalance - balance;
 
+                var transaction = new Transaction()
+                {
+                    AccountNumber = _accountNum,
+                    TransactionType = "Deposit",
+                    BalanceDifference = balanceDiff,
+                    TransactionDate = DateTime.Now
+                };
+
+                query.Balance += amount;
+                context.Transactions.Add(transaction);
                 return context.SaveChanges() == 1;
             }
         }
