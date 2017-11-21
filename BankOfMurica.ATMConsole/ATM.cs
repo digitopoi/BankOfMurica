@@ -93,10 +93,10 @@ namespace BankOfMurica.ATMConsole
                     //    Transfer();
                     //    break;
 
-                    case ConsoleKey.NumPad6:
-                        Console.Clear();
-                        SignOut();
-                        break;
+                    //case ConsoleKey.NumPad6:
+                    //    Console.Clear();
+                    //    SignOut();
+                    //    break;
                 }
             }
 

@@ -20,11 +20,10 @@ namespace BankOfMurica.Models
             this.Transactions = new HashSet<Transaction>();
         }
     
-        public int AccountID { get; set; }
         public int AccountNumber { get; set; }
         public decimal Balance { get; set; }
+        public int Pin { get; set; }
         public int CustomerID { get; set; }
-        public Nullable<int> Pin { get; set; }
     
         public virtual Customer Customer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -4,16 +4,15 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="BankOfMuricaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="BankModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Accounts">
           <Key>
-            <PropertyRef Name="AccountID" />
+            <PropertyRef Name="AccountNumber" />
           </Key>
-          <Property Name="AccountID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="AccountNumber" Type="int" Nullable="false" />
+          <Property Name="AccountNumber" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Balance" Type="money" Nullable="false" />
+          <Property Name="Pin" Type="int" Nullable="false" />
           <Property Name="CustomerID" Type="int" Nullable="false" />
-          <Property Name="Pin" Type="int" />
         </EntityType>
         <EntityType Name="Customers">
           <Key>
@@ -28,7 +27,7 @@
             <PropertyRef Name="TransactionID" />
           </Key>
           <Property Name="TransactionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="AccountID" Type="int" Nullable="false" />
+          <Property Name="AccountNumber" Type="int" Nullable="false" />
           <Property Name="TransactionType" Type="nvarchar" MaxLength="25" Nullable="false" />
           <Property Name="BalanceDifference" Type="money" Nullable="false" />
           <Property Name="TransactionDate" Type="date" Nullable="false" />
@@ -47,21 +46,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_dbo_Transactions_dbo_Accounts_AccoundID">
+        <Association Name="FK_dbo_Transactions_dbo_Accounts_AccountNumber">
           <End Role="Accounts" Type="Self.Accounts" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="Transactions" Type="Self.Transactions" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Accounts">
-              <PropertyRef Name="AccountID" />
+              <PropertyRef Name="AccountNumber" />
             </Principal>
             <Dependent Role="Transactions">
-              <PropertyRef Name="AccountID" />
+              <PropertyRef Name="AccountNumber" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="BankOfMuricaModelStoreContainer">
+        <EntityContainer Name="BankModelStoreContainer">
           <EntitySet Name="Accounts" EntityType="Self.Accounts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="dbo" store:Type="Tables" />
@@ -69,7 +68,7 @@
             <End Role="Customers" EntitySet="Customers" />
             <End Role="Accounts" EntitySet="Accounts" />
           </AssociationSet>
-          <AssociationSet Name="FK_dbo_Transactions_dbo_Accounts_AccoundID" Association="Self.FK_dbo_Transactions_dbo_Accounts_AccoundID">
+          <AssociationSet Name="FK_dbo_Transactions_dbo_Accounts_AccountNumber" Association="Self.FK_dbo_Transactions_dbo_Accounts_AccountNumber">
             <End Role="Accounts" EntitySet="Accounts" />
             <End Role="Transactions" EntitySet="Transactions" />
           </AssociationSet>
@@ -78,18 +77,17 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="BankOfMuricaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="BankModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Account">
           <Key>
-            <PropertyRef Name="AccountID" />
+            <PropertyRef Name="AccountNumber" />
           </Key>
-          <Property Name="AccountID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AccountNumber" Type="Int32" Nullable="false" />
+          <Property Name="AccountNumber" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Balance" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="Pin" Type="Int32" Nullable="false" />
           <Property Name="CustomerID" Type="Int32" Nullable="false" />
-          <Property Name="Pin" Type="Int32" />
           <NavigationProperty Name="Customer" Relationship="Self.FK_dbo_Accounts_dbo_Customers_CustomerID" FromRole="Accounts" ToRole="Customers" />
-          <NavigationProperty Name="Transactions" Relationship="Self.FK_dbo_Transactions_dbo_Accounts_AccoundID" FromRole="Accounts" ToRole="Transactions" />
+          <NavigationProperty Name="Transactions" Relationship="Self.FK_dbo_Transactions_dbo_Accounts_AccountNumber" FromRole="Accounts" ToRole="Transactions" />
         </EntityType>
         <EntityType Name="Customer">
           <Key>
@@ -105,11 +103,11 @@
             <PropertyRef Name="TransactionID" />
           </Key>
           <Property Name="TransactionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AccountID" Type="Int32" Nullable="false" />
+          <Property Name="AccountNumber" Type="Int32" Nullable="false" />
           <Property Name="TransactionType" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="BalanceDifference" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
           <Property Name="TransactionDate" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="Account" Relationship="Self.FK_dbo_Transactions_dbo_Accounts_AccoundID" FromRole="Transactions" ToRole="Accounts" />
+          <NavigationProperty Name="Account" Relationship="Self.FK_dbo_Transactions_dbo_Accounts_AccountNumber" FromRole="Transactions" ToRole="Accounts" />
         </EntityType>
         <Association Name="FK_dbo_Accounts_dbo_Customers_CustomerID">
           <End Role="Customers" Type="Self.Customer" Multiplicity="1">
@@ -125,17 +123,17 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_dbo_Transactions_dbo_Accounts_AccoundID">
+        <Association Name="FK_dbo_Transactions_dbo_Accounts_AccountNumber">
           <End Role="Accounts" Type="Self.Account" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="Transactions" Type="Self.Transaction" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Accounts">
-              <PropertyRef Name="AccountID" />
+              <PropertyRef Name="AccountNumber" />
             </Principal>
             <Dependent Role="Transactions">
-              <PropertyRef Name="AccountID" />
+              <PropertyRef Name="AccountNumber" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -147,7 +145,7 @@
             <End Role="Customers" EntitySet="Customers" />
             <End Role="Accounts" EntitySet="Accounts" />
           </AssociationSet>
-          <AssociationSet Name="FK_dbo_Transactions_dbo_Accounts_AccoundID" Association="Self.FK_dbo_Transactions_dbo_Accounts_AccoundID">
+          <AssociationSet Name="FK_dbo_Transactions_dbo_Accounts_AccountNumber" Association="Self.FK_dbo_Transactions_dbo_Accounts_AccountNumber">
             <End Role="Accounts" EntitySet="Accounts" />
             <End Role="Transactions" EntitySet="Transactions" />
           </AssociationSet>
@@ -157,20 +155,19 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="BankOfMuricaModelStoreContainer" CdmEntityContainer="BankEntities">
+        <EntityContainerMapping StorageEntityContainer="BankModelStoreContainer" CdmEntityContainer="BankEntities">
           <EntitySetMapping Name="Accounts">
-            <EntityTypeMapping TypeName="BankOfMuricaModel.Account">
+            <EntityTypeMapping TypeName="BankModel.Account">
               <MappingFragment StoreEntitySet="Accounts">
-                <ScalarProperty Name="AccountID" ColumnName="AccountID" />
                 <ScalarProperty Name="AccountNumber" ColumnName="AccountNumber" />
                 <ScalarProperty Name="Balance" ColumnName="Balance" />
-                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
                 <ScalarProperty Name="Pin" ColumnName="Pin" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Customers">
-            <EntityTypeMapping TypeName="BankOfMuricaModel.Customer">
+            <EntityTypeMapping TypeName="BankModel.Customer">
               <MappingFragment StoreEntitySet="Customers">
                 <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
@@ -179,10 +176,10 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Transactions">
-            <EntityTypeMapping TypeName="BankOfMuricaModel.Transaction">
+            <EntityTypeMapping TypeName="BankModel.Transaction">
               <MappingFragment StoreEntitySet="Transactions">
                 <ScalarProperty Name="TransactionID" ColumnName="TransactionID" />
-                <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+                <ScalarProperty Name="AccountNumber" ColumnName="AccountNumber" />
                 <ScalarProperty Name="TransactionType" ColumnName="TransactionType" />
                 <ScalarProperty Name="BalanceDifference" ColumnName="BalanceDifference" />
                 <ScalarProperty Name="TransactionDate" ColumnName="TransactionDate" />

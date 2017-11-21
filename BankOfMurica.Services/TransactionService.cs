@@ -27,6 +27,7 @@ namespace BankOfMurica.Services
 
                 var balance = query.Balance;
                 var newBalance = balance -= amount;
+                var balanceDiff = newBalance - balance;
 
                 if (newBalance <= 0)
                 {
@@ -34,6 +35,13 @@ namespace BankOfMurica.Services
                     return false;
                 }
                 query.Balance = newBalance;
+
+                // TODO: implement saving transactions
+                var transaction = new Transaction()
+                {
+                    
+                };
+
                 context.SaveChanges();
                 return context.SaveChanges() == 1;
             }

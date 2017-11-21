@@ -15,7 +15,7 @@ namespace BankOfMurica.Models
     public partial class Transaction
     {
         public int TransactionID { get; set; }
-        public int AccountID { get; set; }
+        public int AccountNumber { get; set; }
         public string TransactionType { get; set; }
         public decimal BalanceDifference { get; set; }
         public System.DateTime TransactionDate { get; set; }
