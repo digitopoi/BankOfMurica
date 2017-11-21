@@ -12,11 +12,11 @@ namespace BankOfMurica.ATMConsole
     {
         public static void Login()
         {
-            Console.Write("Enter your account number: ");
-            var accountInput = Int32.Parse(Console.ReadLine());
+            var accountInput = Int32.Parse(ATMUtilities.EnterAccountNumber());
 
-            Console.Write("Enter you pin: ");
-            var pinInput = Int32.Parse(Console.ReadLine());
+            Console.Clear();
+
+            var pinInput = Int32.Parse(ATMUtilities.EnterPin());
 
             var service = new AccountService(accountInput, pinInput);
 
@@ -72,7 +72,16 @@ namespace BankOfMurica.ATMConsole
                     case ConsoleKey.NumPad4:
                         Console.Clear();
                         
-                        service.ChangePin(ATMUtilities.PinChanger());
+                        var returnValue = service.ChangePin(ATMUtilities.PinChanger());
+                        if (returnValue)
+                        {
+                            Console.Clear();
+                            ATMUtilities.PinChangeSuccess();
+                        }
+                        Thread.Sleep(1500);
+                        Console.Clear();
+                        ATMUtilities.NavigationMenu();
+                        input = Console.ReadKey().Key;
                         break;
 
                     //case ConsoleKey.NumPad5:

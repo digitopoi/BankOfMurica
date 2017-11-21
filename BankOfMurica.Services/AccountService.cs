@@ -50,6 +50,10 @@ namespace BankOfMurica.Services
 
         public bool ChangePin(int newPin)
         {
+            if (newPin < 1000 || newPin > 9999)
+            {
+                return false;
+            }
             using (BankEntities context = new BankEntities())
             {
                 var query = context
@@ -60,6 +64,7 @@ namespace BankOfMurica.Services
                 query.Pin = newPin;
 
                 return context.SaveChanges() == 1;
+                
             }
         }
 
