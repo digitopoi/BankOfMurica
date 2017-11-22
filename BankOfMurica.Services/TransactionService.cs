@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BankOfMurica.Services
 {
-    public class TransactionService
+    public class TransactionService : ITransactionService
     {
         private readonly int _accountNum;
 
@@ -17,19 +17,19 @@ namespace BankOfMurica.Services
             _accountNum = accountNum;
         }
 
-        private Account GetAccount(BankEntities context)
+        public async Task<Account> GetAccountAsync(BankEntities context)
         {
-            return context
-                       .Accounts
-                       .Where(e => e.AccountNumber == _accountNum)
-                       .SingleOrDefault();
+            return await context
+                               .Accounts
+                               .Where(e => e.AccountNumber == _accountNum)
+                               .SingleOrDefaultAsync();
         }
 
-        public bool Withdraw(decimal amount)
+        public async Task<bool> WithdrawAsync(decimal amount)
         {
             using (BankEntities context = new BankEntities())
             {
-                Account query = GetAccount(context);
+                Account query = await GetAccountAsync(context);
 
                 var balance = query.Balance;
                 var newBalance = balance - amount;
@@ -51,16 +51,16 @@ namespace BankOfMurica.Services
 
                 query.Balance = newBalance;
                 context.Transactions.Add(transaction);
-                return context.SaveChanges() == 1;
+                return await context.SaveChangesAsync() == 1;
             }
         }
 
 
-        public bool Deposit(decimal amount)
+        public async Task<bool> DepositAsync(decimal amount)
         {
             using (BankEntities context = new BankEntities())
             {
-                Account query = GetAccount(context);
+                Account query = GetAccountAsync(context).Result;
 
                 var balance = query.Balance;
                 var newBalance = balance + amount;
@@ -73,26 +73,26 @@ namespace BankOfMurica.Services
                     BalanceDifference = balanceDiff,
                     TransactionDate = DateTime.Now
                 };
-
+                
                 query.Balance += amount;
                 context.Transactions.Add(transaction);
-                return context.SaveChanges() == 1;
+                return await context.SaveChangesAsync() == 1;
             }
         }
 
-        public bool Transfer(int target, decimal amount)
+        public async Task<bool> TransferAsync(int target, decimal amount)
         {
             using (BankEntities context = new BankEntities())
             {
-                var origin = context
-                                  .Accounts
-                                  .Where(e => e.AccountNumber == _accountNum)
-                                  .SingleOrDefault();
+                var origin = await context
+                                          .Accounts
+                                          .Where(e => e.AccountNumber == _accountNum)
+                                          .SingleOrDefaultAsync();
 
-                var destination = context
-                                  .Accounts
-                                  .Where(e => e.AccountNumber == target)
-                                  .SingleOrDefault();
+                var destination = await context
+                                            .Accounts
+                                            .Where(e => e.AccountNumber == target)
+                                            .SingleOrDefaultAsync();
 
                 var originBalance = origin.Balance;
                 var destinationBalance = destination.Balance;
@@ -124,18 +124,18 @@ namespace BankOfMurica.Services
                 context.Transactions.Add(originTransaction);
                 context.Transactions.Add(destinationTransaction);
 
-                return context.SaveChanges() == 1;
+                return await context.SaveChangesAsync() == 1;
             }
         }
 
-        public IEnumerable<Transaction> AccountHistory()
+        public async Task<IEnumerable<Transaction>> GetAccountHistoryAsync()
         {
             using (BankEntities context = new BankEntities())
             {
-                var query = context
-                                   .Transactions
-                                   .Where(e => e.AccountNumber == _accountNum)
-                                   .ToList();
+                var query = await context
+                                        .Transactions
+                                        .Where(e => e.AccountNumber == _accountNum)
+                                        .ToListAsync();
                 return query;
             }
         }
