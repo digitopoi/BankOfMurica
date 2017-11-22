@@ -20,9 +20,9 @@ namespace BankOfMurica.ATMConsole
 
             var service = new AccountService(accountInput, pinInput);
 
-            var response = service.CheckAccount();
+            var response = service.ValidateAccountAsync();
 
-            if (!response)
+            if (!response.Result)
             {
                 Console.WriteLine("I'm sorry, that account and pin combination was not found.");
                 Console.WriteLine("Please login again.");
@@ -38,7 +38,7 @@ namespace BankOfMurica.ATMConsole
             
         }
 
-        private static void MainMenu(int accountInput, int pinInput)
+        private async static Task<int> MainMenu(int accountInput, int pinInput)
         {
             var accountService = new AccountService(accountInput, pinInput);
             var transactionService = new TransactionService(accountInput);
@@ -52,25 +52,25 @@ namespace BankOfMurica.ATMConsole
                 {
                     case ConsoleKey.NumPad1:
                         Console.Clear();
-                        ATMUtilities.DisplayBalance(accountService.CheckBalance());
+                        ATMUtilities.DisplayBalance(accountService.GetBalanceAsync().Result);
                         ATMUtilities.NewMenuScreen();
                         input = Console.ReadKey().Key;
                         break;
 
                     case ConsoleKey.NumPad2:
                         Console.Clear();
-                        transactionService.Withdraw(ATMUtilities.WithdrawalPrompt());
+                        await transactionService.WithdrawAsync(ATMUtilities.WithdrawalPrompt());
                         Console.Clear();
-                        ATMUtilities.NewBalance(accountService.CheckBalance());
+                        ATMUtilities.NewBalance(accountService.GetBalanceAsync().Result);
                         ATMUtilities.NewMenuScreen();
                         input = Console.ReadKey().Key;
                         break;
 
                     case ConsoleKey.NumPad3:
                         Console.Clear();
-                        transactionService.Deposit(ATMUtilities.DepositPrompt());
+                        await transactionService.DepositAsync(ATMUtilities.DepositPrompt());
                         Console.Clear();
-                        ATMUtilities.NewBalance(accountService.CheckBalance());
+                        ATMUtilities.NewBalance(accountService.GetBalanceAsync().Result);
                         ATMUtilities.NewMenuScreen();
                         input = Console.ReadKey().Key;
                         break;
@@ -78,8 +78,8 @@ namespace BankOfMurica.ATMConsole
                     case ConsoleKey.NumPad4:
                         Console.Clear();
                         
-                        var returnValue = accountService.ChangePin(ATMUtilities.PinChanger());
-                        if (returnValue)
+                        var returnValue = accountService.ChangePinAsync(ATMUtilities.PinChanger());
+                        if (returnValue.Result)
                         {
                             Console.Clear();
                             ATMUtilities.PinChangeSuccess();
@@ -94,8 +94,8 @@ namespace BankOfMurica.ATMConsole
                         Console.Clear();
                         var amount = ATMUtilities.TransferAmountPrompt();
                         Console.Clear();
-                        transactionService.Transfer(target, amount);
-                        ATMUtilities.TransferSuccess(accountService.CheckBalance());
+                        await transactionService.TransferAsync(target, amount);
+                        ATMUtilities.TransferSuccess(accountService.GetBalanceAsync().Result);
                         ATMUtilities.NewMenuScreen();
                         input = Console.ReadKey().Key;
                         break;
@@ -104,8 +104,8 @@ namespace BankOfMurica.ATMConsole
                         Console.Clear();
                         ATMUtilities.GetHistory();
                         Thread.Sleep(500);
-                        var transactions = transactionService.AccountHistory();
-                        ATMUtilities.HistoryRow(transactions);
+                        var transactions = transactionService.GetAccountHistoryAsync();
+                        ATMUtilities.HistoryRow(transactions.Result);
                         Thread.Sleep(3000);
                         ATMUtilities.NewMenuScreen();
                         input = Console.ReadKey().Key;
@@ -119,6 +119,8 @@ namespace BankOfMurica.ATMConsole
                         Login();
                         break;
                 }
+
+                return 0;
             }
 
 
