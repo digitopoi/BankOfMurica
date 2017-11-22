@@ -10,6 +10,6 @@ namespace BankOfMurica.Services
     {
         Task<bool> ValidateAccountAsync();
         Task<decimal> GetBalanceAsync();
-        Task<bool> ChangePinAsync();
+        Task<bool> ChangePinAsync(int newPin);
     }
 }

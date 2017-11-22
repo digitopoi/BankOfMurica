@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BankOfMurica.Services
 {
-    public class AccountService
+    public class AccountService : IAccountService
     {
         private readonly int _accountNum;
         private readonly int _accountPin;
@@ -19,14 +19,14 @@ namespace BankOfMurica.Services
             _accountPin = accountPin;
         }
 
-        public bool CheckAccount()
+        public async Task<bool> ValidateAccountAsync()
         {
             using (BankEntities context = new BankEntities())
             {
-                var query = context
-                              .Accounts
-                              .Where(e => e.AccountNumber == _accountNum && e.Pin == _accountPin)
-                              .SingleOrDefault();
+                var query = await context
+                                         .Accounts
+                                         .Where(e => e.AccountNumber == _accountNum && e.Pin == _accountPin)
+                                         .SingleOrDefaultAsync();
 
                 if (query != null)
                     return true;
@@ -35,20 +35,20 @@ namespace BankOfMurica.Services
             }
         }
 
-        public decimal CheckBalance()
+        public async Task<decimal> GetBalanceAsync()
         {
             using (BankEntities context = new BankEntities())
             {
-                var query = context
-                              .Accounts
-                              .Where(e => e.AccountNumber == _accountNum)
-                              .Select(e => e.Balance)
-                              .SingleOrDefault();
+                var query = await context
+                                        .Accounts
+                                        .Where(e => e.AccountNumber == _accountNum)
+                                        .Select(e => e.Balance)
+                                        .SingleOrDefaultAsync();
                 return query;
             }
         }
 
-        public bool ChangePin(int newPin)
+        public async Task<bool> ChangePinAsync(int newPin)
         {
             if (newPin < 1000 || newPin > 9999)
             {
@@ -56,14 +56,14 @@ namespace BankOfMurica.Services
             }
             using (BankEntities context = new BankEntities())
             {
-                var query = context
-                               .Accounts
-                               .Where(e => e.AccountNumber == _accountNum)
-                               .SingleOrDefault();
+                var query = await context
+                                        .Accounts
+                                        .Where(e => e.AccountNumber == _accountNum)
+                                        .SingleOrDefaultAsync();
 
                 query.Pin = newPin;
 
-                return context.SaveChanges() == 1;
+                return await context.SaveChangesAsync() == 1;
                 
             }
         }

@@ -132,11 +132,10 @@ namespace BankOfMurica.Services
         {
             using (BankEntities context = new BankEntities())
             {
-                var query = await context
-                                        .Transactions
-                                        .Where(e => e.AccountNumber == _accountNum)
-                                        .ToListAsync();
-                return query;
+                return await context
+                                    .Transactions
+                                    .Where(e => e.AccountNumber == _accountNum)
+                                    .ToListAsync();
             }
         }
  
